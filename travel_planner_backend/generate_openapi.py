@@ -2,6 +2,12 @@ import json
 import os
 from app import app, api  # import your Flask app and Api instance
 
+"""
+Run this to regenerate OpenAPI JSON:
+    cd travel_planner_backend
+    python generate_openapi.py
+"""
+
 with app.app_context():
     # flask-smorest stores the spec in api.spec
     openapi_spec = api.spec.to_dict()
