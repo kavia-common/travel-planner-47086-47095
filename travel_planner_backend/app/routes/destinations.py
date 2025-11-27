@@ -52,6 +52,13 @@ class DestinationsCollection(MethodView):
 class DestinationsItem(MethodView):
     """Destination item endpoints."""
 
+    @blp.doc(parameters=[{
+        "name": "destination_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Destination ID"
+    }])
     @blp.response(200, DestinationSchema)
     def get(self, destination_id: int):
         """Get destination by ID."""
@@ -60,6 +67,13 @@ class DestinationsItem(MethodView):
             abort(404, message="Destination not found")
         return d
 
+    @blp.doc(parameters=[{
+        "name": "destination_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Destination ID"
+    }])
     @use_args(DestinationUpdateSchema, location="json")
     @blp.response(200, DestinationSchema)
     def patch(self, args, destination_id: int):
@@ -76,6 +90,13 @@ class DestinationsItem(MethodView):
             abort(404, message="Destination not found")
         return d
 
+    @blp.doc(parameters=[{
+        "name": "destination_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Destination ID"
+    }])
     @blp.response(204)
     def delete(self, destination_id: int):
         """Delete a destination and cascade its activities."""

@@ -53,6 +53,13 @@ class ActivitiesCollection(MethodView):
 class ActivitiesItem(MethodView):
     """Activity item endpoints."""
 
+    @blp.doc(parameters=[{
+        "name": "activity_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Activity ID"
+    }])
     @blp.response(200, ActivitySchema)
     def get(self, activity_id: int):
         """Get activity by ID."""
@@ -61,6 +68,13 @@ class ActivitiesItem(MethodView):
             abort(404, message="Activity not found")
         return a
 
+    @blp.doc(parameters=[{
+        "name": "activity_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Activity ID"
+    }])
     @use_args(ActivityUpdateSchema, location="json")
     @blp.response(200, ActivitySchema)
     def patch(self, args, activity_id: int):
@@ -80,6 +94,13 @@ class ActivitiesItem(MethodView):
         except ValueError as e:
             abort(400, message=str(e))
 
+    @blp.doc(parameters=[{
+        "name": "activity_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Activity ID"
+    }])
     @blp.response(204)
     def delete(self, activity_id: int):
         """Delete an activity."""

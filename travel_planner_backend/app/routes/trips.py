@@ -42,6 +42,13 @@ class TripsCollection(MethodView):
 class TripsItem(MethodView):
     """Trip item endpoints."""
 
+    @blp.doc(parameters=[{
+        "name": "trip_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Trip ID"
+    }])
     @blp.response(200, TripSchema)
     def get(self, trip_id: int):
         """Get a trip by ID."""
@@ -50,6 +57,13 @@ class TripsItem(MethodView):
             abort(404, message="Trip not found")
         return t
 
+    @blp.doc(parameters=[{
+        "name": "trip_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Trip ID"
+    }])
     @use_args(TripUpdateSchema, location="json")
     @blp.response(200, TripSchema)
     def patch(self, args, trip_id: int):
@@ -69,6 +83,13 @@ class TripsItem(MethodView):
         except ValueError as e:
             abort(400, message=str(e))
 
+    @blp.doc(parameters=[{
+        "name": "trip_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "Trip ID"
+    }])
     @blp.response(204)
     def delete(self, trip_id: int):
         """Delete a trip and cascade its children."""

@@ -39,6 +39,13 @@ class UsersCollection(MethodView):
 class UsersItem(MethodView):
     """User item endpoints."""
 
+    @blp.doc(parameters=[{
+        "name": "user_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "User ID"
+    }])
     @blp.response(200, UserSchema)
     def get(self, user_id: int):
         """Get a user by ID."""
@@ -47,6 +54,13 @@ class UsersItem(MethodView):
             abort(404, message="User not found")
         return u
 
+    @blp.doc(parameters=[{
+        "name": "user_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "User ID"
+    }])
     @use_args(UserUpdateSchema, location="json")
     @blp.response(200, UserSchema)
     def patch(self, args, user_id: int):
@@ -56,6 +70,13 @@ class UsersItem(MethodView):
             abort(404, message="User not found")
         return u
 
+    @blp.doc(parameters=[{
+        "name": "user_id",
+        "in": "path",
+        "required": True,
+        "schema": {"type": "integer"},
+        "description": "User ID"
+    }])
     @blp.response(204)
     def delete(self, user_id: int):
         """Delete a user."""
