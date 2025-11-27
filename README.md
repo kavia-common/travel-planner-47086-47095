@@ -7,8 +7,16 @@ Backend dev server will expose OpenAPI at /docs and JSON at /openapi.json.
 Quick start:
 1. Install: pip install -r travel_planner_backend/requirements.txt
 2. Run: cd travel_planner_backend && python run.py
-3. Swagger UI: http://localhost:5000/docs
-4. Health: GET http://localhost:5000/
+3. Swagger UI: http://localhost:3001/docs
+4. Health: GET http://localhost:3001/
+
+Container/Preview notes:
+- The backend binds to 0.0.0.0:3001 for container health checks.
+- FLASK_APP (for CLI) is app:create_app
+- Do not enable FLASK_ENV=development in container/production. The run.py disables reloader and debug by default.
+
+Alternative run via Flask CLI:
+- From travel_planner_backend: FLASK_APP=app:create_app flask run --host=0.0.0.0 --port=3001
 
 CORS:
 - Defaults to allow http://localhost:3000. Override via FRONTEND_ORIGIN env var.
@@ -17,6 +25,7 @@ Environment variables (placeholders):
 - FRONTEND_ORIGIN=http://localhost:3000
 - USE_IN_MEMORY_STORE=true
 - DATABASE_URL=postgresql+psycopg2://user:pass@host:5432/dbname (future integration)
+- PORT=3001 (optional override)
 
 API overview (in-memory persistence):
 - Users

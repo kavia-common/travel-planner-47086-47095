@@ -1,3 +1,11 @@
+"""Flask application factory for the Travel Planner backend.
+
+FLASK_APP discovery:
+- You can run with Flask CLI using: FLASK_APP=app:create_app flask run --host=0.0.0.0 --port=3001
+
+This module avoids heavy imports and side effects at module import time
+to ensure fast container startup and predictable behavior.
+"""
 from flask import Flask
 from flask_cors import CORS
 from flask_smorest import Api
@@ -45,7 +53,7 @@ def create_app() -> Flask:
 
     api = Api(app)
 
-    # Import blueprints lazily to avoid circular imports
+    # Import blueprints lazily to avoid circular imports and keep import time low.
     from .routes.health import blp as health_blp
     from .routes.users import blp as users_blp
     from .routes.trips import blp as trips_blp
@@ -61,7 +69,7 @@ def create_app() -> Flask:
     api.register_blueprint(destinations_blp)
     api.register_blueprint(activities_blp)
 
-    # Attach api to app for tooling (e.g., generate_openapi)
+    # Attach api to app for tooling (e.g., generate_openAPI)
     app.extensions = getattr(app, "extensions", {})
     app.extensions["smorest_api"] = api
 
