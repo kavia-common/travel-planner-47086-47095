@@ -51,14 +51,6 @@ class ItinerariesCollection(MethodView):
 class ItinerariesItem(MethodView):
     """Itinerary item endpoints."""
 
-    # Explicit OpenAPI param for path itinerary_id
-    @blp.doc(parameters=[{
-        "name": "itinerary_id",
-        "in": "path",
-        "required": True,
-        "schema": {"type": "integer"},
-        "description": "Itinerary ID"
-    }])
     @blp.response(200, ItinerarySchema)
     def get(self, itinerary_id: int):
         """Get itinerary by ID."""
@@ -67,14 +59,6 @@ class ItinerariesItem(MethodView):
             abort(404, message="Itinerary not found")
         return it
 
-    # Explicit OpenAPI param for path itinerary_id
-    @blp.doc(parameters=[{
-        "name": "itinerary_id",
-        "in": "path",
-        "required": True,
-        "schema": {"type": "integer"},
-        "description": "Itinerary ID"
-    }])
     @use_args(ItineraryUpdateSchema, location="json")
     @blp.response(200, ItinerarySchema)
     def patch(self, args, itinerary_id: int):
@@ -90,14 +74,6 @@ class ItinerariesItem(MethodView):
             abort(404, message="Itinerary not found")
         return it
 
-    # Explicit OpenAPI param for path itinerary_id
-    @blp.doc(parameters=[{
-        "name": "itinerary_id",
-        "in": "path",
-        "required": True,
-        "schema": {"type": "integer"},
-        "description": "Itinerary ID"
-    }])
     @blp.response(204)
     def delete(self, itinerary_id: int):
         """Delete an itinerary and cascade its destinations and activities."""
