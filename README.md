@@ -10,6 +10,15 @@ Quick start:
 3. Swagger UI: http://localhost:3001/docs
 4. Health: GET http://localhost:3001/
 
+Flask CLI alternative:
+- From travel_planner_backend:
+  FLASK_APP=app:create_app flask run --host=0.0.0.0 --port=3001
+
+Notes on circular imports:
+- Route modules only export a Blueprint object (blp) and do not import the Flask app.
+- The app factory (app/__init__.py:create_app) lazily imports and registers blueprints to avoid circular imports.
+- Environment variables are loaded via python-dotenv inside create_app(), which is safe and non-global at import time.
+
 Container/Preview notes:
 - The backend binds to 0.0.0.0:3001 for container health checks.
 - FLASK_APP (for CLI) is app:create_app
