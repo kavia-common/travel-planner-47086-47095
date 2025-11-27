@@ -23,6 +23,7 @@ blp = Blueprint(
 class ItinerariesCollection(MethodView):
     """Itineraries collection endpoints."""
 
+    # Explicit parameter docs with valid OpenAPI objects
     @blp.doc(
         summary="List itineraries. Optionally filter by trip_id.",
         parameters=[
@@ -38,6 +39,7 @@ class ItinerariesCollection(MethodView):
     @blp.response(200, ItinerarySchema(many=True))
     def get(self):
         """List itineraries. Optionally filter by trip_id."""
+        # Read query argument safely; None if absent
         trip_id = request.args.get("trip_id", type=int)
         return list_itineraries(trip_id=trip_id)
 

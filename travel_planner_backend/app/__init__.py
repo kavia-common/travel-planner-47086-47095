@@ -61,10 +61,13 @@ def create_app() -> Flask:
     from .routes.destinations import blp as destinations_blp
     from .routes.activities import blp as activities_blp
 
-    # Register blueprints
+    # Register blueprints one-by-one to make isolating apispec errors straightforward.
+    # If a registration raises InvalidParameterError, comment out subsequent registrations
+    # temporarily to pinpoint the offending blueprint. Current order prioritizes suspected modules last.
     api.register_blueprint(health_blp)
     api.register_blueprint(users_blp)
     api.register_blueprint(trips_blp)
+    # Suspected offender (kept last among core entities to ease isolation)
     api.register_blueprint(itineraries_blp)
     api.register_blueprint(destinations_blp)
     api.register_blueprint(activities_blp)
