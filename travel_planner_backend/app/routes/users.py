@@ -2,7 +2,6 @@ from flask_smorest import Blueprint, abort
 from flask.views import MethodView
 from webargs.flaskparser import use_args
 from ..schemas import UserCreateSchema, UserUpdateSchema, UserSchema
-from .. import app  # noqa
 from ..models import (
     list_users,
     create_user,

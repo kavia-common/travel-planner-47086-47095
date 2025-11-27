@@ -1,6 +1,6 @@
 import json
 import os
-from app import app, api  # import your Flask app and Api instance
+from app import create_app
 
 """
 Run this to regenerate OpenAPI JSON:
@@ -8,9 +8,12 @@ Run this to regenerate OpenAPI JSON:
     python generate_openapi.py
 """
 
+app = create_app()
+
 with app.app_context():
-    # flask-smorest stores the spec in api.spec
-    openapi_spec = api.spec.to_dict()
+    # flask-smorest stores the spec in the Api instance; we saved it in app.extensions
+    api = app.extensions.get("smorest_api")
+    openapi_spec = api.spec.to_dict() if api else {}
 
     output_dir = "interfaces"
     os.makedirs(output_dir, exist_ok=True)
