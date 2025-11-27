@@ -1,7 +1,7 @@
 from flask_smorest import Blueprint, abort
 from flask.views import MethodView
+from flask import request
 from webargs.flaskparser import use_args
-from webargs import fields as arg_fields
 from ..schemas import ActivityCreateSchema, ActivityUpdateSchema, ActivitySchema
 from ..models import (
     list_activities,
@@ -23,14 +23,32 @@ blp = Blueprint(
 class ActivitiesCollection(MethodView):
     """Activities collection endpoints."""
 
-    @blp.arguments(
-        {"itinerary_id": arg_fields.Int(required=False), "destination_id": arg_fields.Int(required=False)},
-        location="query",
+    @blp.doc(
+        summary="List activities with optional filters.",
+        parameters=[
+            {
+                "name": "itinerary_id",
+                "in": "query",
+                "required": False,
+                "schema": {"type": "integer"},
+                "description": "Filter activities by itinerary ID",
+            },
+            {
+                "name": "destination_id",
+                "in": "query",
+                "required": False,
+                "schema": {"type": "integer"},
+                "description": "Filter activities by destination ID",
+            },
+        ],
     )
     @blp.response(200, ActivitySchema(many=True))
-    def get(self, args):
+    def get(self):
         """List activities, optionally filtering by itinerary_id or destination_id."""
-        return list_activities(itinerary_id=args.get("itinerary_id"), destination_id=args.get("destination_id"))
+        return list_activities(
+            itinerary_id=request.args.get("itinerary_id", type=int),
+            destination_id=request.args.get("destination_id", type=int),
+        )
 
     @use_args(ActivityCreateSchema, location="json")
     @blp.response(201, ActivitySchema)

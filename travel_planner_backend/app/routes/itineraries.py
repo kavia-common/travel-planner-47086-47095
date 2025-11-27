@@ -1,7 +1,7 @@
 from flask_smorest import Blueprint, abort
 from flask.views import MethodView
+from flask import request
 from webargs.flaskparser import use_args
-from webargs import fields as arg_fields
 from ..schemas import ItineraryCreateSchema, ItineraryUpdateSchema, ItinerarySchema
 from ..models import (
     list_itineraries,
@@ -23,11 +23,22 @@ blp = Blueprint(
 class ItinerariesCollection(MethodView):
     """Itineraries collection endpoints."""
 
-    @blp.arguments({"trip_id": arg_fields.Int(required=False)}, location="query")
+    @blp.doc(
+        summary="List itineraries. Optionally filter by trip_id.",
+        parameters=[
+            {
+                "name": "trip_id",
+                "in": "query",
+                "required": False,
+                "schema": {"type": "integer"},
+                "description": "Filter itineraries by parent trip ID",
+            }
+        ],
+    )
     @blp.response(200, ItinerarySchema(many=True))
-    def get(self, args):
+    def get(self):
         """List itineraries. Optionally filter by trip_id."""
-        trip_id = args.get("trip_id")
+        trip_id = request.args.get("trip_id", type=int)
         return list_itineraries(trip_id=trip_id)
 
     @use_args(ItineraryCreateSchema, location="json")
